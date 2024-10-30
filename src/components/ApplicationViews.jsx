@@ -3,9 +3,20 @@ import { Authorized } from "./Authorized";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import Home from "../pages/Home";
+import { AddClientForm } from "../Clients/AddClientForm";
+import { useEffect, useState } from "react";
+
 export const ApplicationViews = () => {
+  const [currentUser, setCurrentUser] = useState({});
   const token = localStorage.getItem("workflow_token");
   const isAuthenticated = !!token;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const userInfo = JSON.parse(token);
+      setCurrentUser(userInfo);
+    }
+  }, [token, isAuthenticated]);
 
   if (
     !isAuthenticated &&
@@ -28,6 +39,10 @@ export const ApplicationViews = () => {
 
       <Route element={<Authorized />}>
         <Route path="/" element={<Home />} />
+        <Route
+          path="/addClientForm"
+          element={<AddClientForm currentUser={currentUser} />}
+        />
         {/* Add your other protected routes here */}
       </Route>
 
