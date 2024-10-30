@@ -1,19 +1,37 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Authorized } from "./Authorized";
 import { Login } from "../pages/Login";
+import { Register } from "../pages/Register";
 import Home from "../pages/Home";
 
 export const ApplicationViews = () => {
+  const isAuthenticated = !!localStorage.getItem("workflow_token");
+
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      {/* Public Routes - Only accessible when NOT logged in */}
+      <Route
+        path="/login"
+        element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
+      />
+      <Route
+        path="/register"
+        element={isAuthenticated ? <Navigate to="/" replace /> : <Register />}
+      />
+
+      {/* Protected Routes - Only accessible when logged in */}
       <Route element={<Authorized />}>
         <Route path="/" element={<Home />} />
-        {/* Add more protected routes here */}
+        {/* Add your other protected routes here */}
       </Route>
 
-      {/* Redirect to login if no route matches */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* Catch all route */}
+      <Route
+        path="*"
+        element={
+          isAuthenticated ? <Navigate to="/" /> : <Navigate to="/login" />
+        }
+      />
     </Routes>
   );
 };

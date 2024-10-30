@@ -12,7 +12,10 @@ export const Login = () => {
     e.preventDefault();
     fetch(`http://localhost:8000/login`, {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({
+        username,
+        password,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -20,7 +23,13 @@ export const Login = () => {
       .then((res) => res.json())
       .then((authInfo) => {
         if (authInfo.valid) {
-          localStorage.setItem("workflow_token", JSON.stringify(authInfo));
+          localStorage.setItem(
+            "workflow_token",
+            JSON.stringify({
+              token: authInfo.token,
+              userId: authInfo.id,
+            })
+          );
           navigate("/");
         } else {
           existDialog.current.showModal();
@@ -31,7 +40,7 @@ export const Login = () => {
   return (
     <main className="container--login">
       <dialog className="dialog dialog--auth" ref={existDialog}>
-        <div>User does not exist</div>
+        <div>Invalid username or password</div>
         <button
           className="button--close"
           onClick={(e) => existDialog.current.close()}
