@@ -3,13 +3,20 @@ import { Authorized } from "./Authorized";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import Home from "../pages/Home";
-
 export const ApplicationViews = () => {
-  const isAuthenticated = !!localStorage.getItem("workflow_token");
+  const token = localStorage.getItem("workflow_token");
+  const isAuthenticated = !!token;
+
+  if (
+    !isAuthenticated &&
+    window.location.pathname !== "/login" &&
+    window.location.pathname !== "/register"
+  ) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <Routes>
-      {/* Public Routes - Only accessible when NOT logged in */}
       <Route
         path="/login"
         element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
@@ -19,18 +26,14 @@ export const ApplicationViews = () => {
         element={isAuthenticated ? <Navigate to="/" replace /> : <Register />}
       />
 
-      {/* Protected Routes - Only accessible when logged in */}
       <Route element={<Authorized />}>
         <Route path="/" element={<Home />} />
         {/* Add your other protected routes here */}
       </Route>
 
-      {/* Catch all route */}
       <Route
         path="*"
-        element={
-          isAuthenticated ? <Navigate to="/" /> : <Navigate to="/login" />
-        }
+        element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
       />
     </Routes>
   );
