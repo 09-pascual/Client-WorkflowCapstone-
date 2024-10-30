@@ -1,37 +1,28 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import { getAllProjects } from "../services/ProjectServices";
 
 export const Home = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/projects", {
-          headers: {
-            Authorization: `Token ${
-              JSON.parse(localStorage.getItem("workflow_token")).token
-            }`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects");
-        }
-
-        const data = await response.json();
+    getAllProjects()
+      .then((data) => {
         setProjects(data);
         setLoading(false);
-      } catch (err) {
+      })
+      .catch((err) => {
         setError(err.message);
         setLoading(false);
-      }
-    };
-
-    fetchProjects();
+      });
   }, []);
+
+  if (loading) return <div>Loading projects...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   if (loading) return <div>Loading projects...</div>;
   if (error) return <div>Error: {error}</div>;
