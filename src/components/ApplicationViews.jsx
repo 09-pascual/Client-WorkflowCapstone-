@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import { AddClientForm } from "../Clients/AddClientForm";
 import { useEffect, useState } from "react";
 import { EditProjectForm } from "../Projects/EditProjectForm";
+import { ShowAllProjectsView } from "../Projects/ShowAllProjects";
 
 export const ApplicationViews = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -47,6 +48,10 @@ export const ApplicationViews = () => {
         <Route
           path="/editProjectForm/:projectId"
           element={<EditProjectForm currentUser={currentUser} />}
+        />
+        <Route
+          path="/projects"
+          element={<ShowAllProjectsView currentUser={currentUser} />}
         />
         {/* Add your other protected routes here */}
       </Route>
