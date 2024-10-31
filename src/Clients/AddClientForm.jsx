@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "../services/ClientServices";
 
-export const AddClientForm = ({ currentUser }) => {
+export const AddClientForm = () => {
   const navigate = useNavigate();
+
   const [client, setClient] = useState({
     first_name: "",
     last_name: "",

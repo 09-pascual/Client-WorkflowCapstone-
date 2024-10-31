@@ -50,7 +50,7 @@ export const Home = () => {
                   {project.project_name}
                 </h2>
                 <button
-                  onClick={() => navigate(`/edit-project/${project.id}`)}
+                  onClick={() => navigate(`/editProjectForm/${project.id}`)}
                   className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-1 px-3 rounded"
                 >
                   Edit
