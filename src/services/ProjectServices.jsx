@@ -23,19 +23,6 @@ export const getProjectById = (id) => {
   }).then((response) => response.json());
 };
 
-export const createProject = (project) => {
-  return fetch("http://localhost:8000/projects", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${
-        JSON.parse(localStorage.getItem("workflow_token")).token
-      }`,
-    },
-    body: JSON.stringify(project),
-  }).then((response) => response.json());
-};
-
 export const updateProject = (id, project) => {
   return fetch(`http://localhost:8000/projects/${id}`, {
     method: "PUT",
@@ -63,4 +50,17 @@ export const deleteProject = (id) => {
     }
     return response;
   });
+};
+
+export const createProject = (project) => {
+  return fetch("http://localhost:8000/projects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${
+        JSON.parse(localStorage.getItem("workflow_token")).token
+      }`,
+    },
+    body: JSON.stringify(project),
+  }).then((response) => response.json());
 };

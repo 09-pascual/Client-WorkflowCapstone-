@@ -10,18 +10,14 @@ export const ShowAllProjectsView = ({ currentUser }) => {
   useEffect(() => {
     getAllProjects()
       .then((data) => {
-        // Sort projects by status priority and date for closed projects
         const sortedProjects = data.sort((a, b) => {
-          // Define status priority
           const statusOrder = { Open: 0, Upcoming: 1, Closed: 2 };
           const statusDiff = statusOrder[a.status] - statusOrder[b.status];
 
-          // If both projects are closed, sort by date (most recent first)
           if (a.status === "Closed" && b.status === "Closed") {
             return new Date(b.start_date) - new Date(a.start_date);
           }
 
-          // Otherwise, sort by status priority
           return statusDiff;
         });
 
