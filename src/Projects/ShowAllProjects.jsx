@@ -5,6 +5,7 @@ import { getAllProjects } from "../services/ProjectServices";
 export const ShowAllProjectsView = ({ currentUser }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     getAllProjects()
@@ -33,6 +34,10 @@ export const ShowAllProjectsView = ({ currentUser }) => {
       });
   }, []);
 
+  const filteredProjects = projects.filter((project) =>
+    statusFilter === "all" ? true : project.status === statusFilter
+  );
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -45,11 +50,26 @@ export const ShowAllProjectsView = ({ currentUser }) => {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
-      <h2 className="text-3xl font-bold text-gray-900">All Projects</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-3xl font-bold text-gray-900">All Projects</h2>
+        <div className="flex items-center gap-3">
+          <select
+            id="status-filter"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="all">Sort By</option>
+            <option value="Open">Open</option>
+            <option value="Upcoming">Upcoming</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+      </div>
 
-      {projects.length > 0 ? (
+      {filteredProjects.length > 0 ? (
         <div className="grid grid-cols-4 gap-6">
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <div
               key={project.id}
               className="bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-200"
@@ -113,7 +133,7 @@ export const ShowAllProjectsView = ({ currentUser }) => {
 
                 <div className="pt-4 border-t border-gray-100">
                   <Link
-                    to={`/projects/edit/${project.id}`}
+                    to={`/editProjectForm/${project.id}`}
                     className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-150"
                   >
                     Edit Project
@@ -125,7 +145,11 @@ export const ShowAllProjectsView = ({ currentUser }) => {
         </div>
       ) : (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-600 text-lg">No projects available.</p>
+          <p className="text-gray-600 text-lg">
+            {statusFilter === "all"
+              ? "No projects available."
+              : `No ${statusFilter} projects available.`}
+          </p>
         </div>
       )}
     </div>
