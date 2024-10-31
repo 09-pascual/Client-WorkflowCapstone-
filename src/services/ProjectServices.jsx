@@ -48,3 +48,19 @@ export const updateProject = (id, project) => {
     body: JSON.stringify(project),
   }).then((response) => response.json());
 };
+
+export const deleteProject = (id) => {
+  return fetch(`http://localhost:8000/projects/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Token ${
+        JSON.parse(localStorage.getItem("workflow_token")).token
+      }`,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Failed to delete project with id ${id}`);
+    }
+    return response;
+  });
+};
