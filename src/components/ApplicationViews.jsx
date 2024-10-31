@@ -7,6 +7,10 @@ import { AddClientForm } from "../Clients/AddClientForm";
 import { useEffect, useState } from "react";
 import { EditProjectForm } from "../Projects/EditProjectForm";
 import { ShowAllProjectsView } from "../Projects/ShowAllProjects";
+import { ShowAllInvoices } from "../Invoices/ShowAllInvoices";
+import { ShowAllClients } from "../Clients/ShowAllClients";
+import EditClientForm from "../Clients/EditClientForm";
+import { CreateProjectForm } from "../Projects/CreateProjectForm";
 
 export const ApplicationViews = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -52,6 +56,18 @@ export const ApplicationViews = () => {
         <Route
           path="/projects"
           element={<ShowAllProjectsView currentUser={currentUser} />}
+        />
+        <Route
+          path="/createNewProjectForm"
+          element={<CreateProjectForm currentUser={currentUser} />}
+        />
+        <Route
+          path="/clients"
+          element={<ShowAllClients currentUser={currentUser} />}
+        />
+        <Route
+          path="/editClientForm/:id"
+          element={<EditClientForm currentUser={currentUser} />}
         />
         {/* Add your other protected routes here */}
       </Route>
